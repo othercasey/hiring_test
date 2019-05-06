@@ -1,42 +1,42 @@
 version: 2
-  hourly:
-    jobs:
-    build:
-      docker: # use the docker executor type; machine and macos executors are also supported
-        - image: circleci/node:10.14-browsers
+hourly:
+  triggers:
+    - schedule:
+      cron: "0 * * * *" # This should run on the 0th minute of every hour,
+                         # every day, every month, every day of the week.
 
-      working_directory: ~/hiring_test
+            # * * * * * command to be executed
+            # - - - - -
+            # | | | | |
+            # | | | | ----- Day of week (0 - 7) (Sunday=0 or 7)
+            # | | | ------- Month (1 - 12)
+            # | | --------- Day of month (1 - 31)
+            # | ----------- Hour (0 - 23)
+            # ------------- Minute (0 - 59)
+            
+            # https://www.cyberciti.biz/faq/how-do-i-add-jobs-to-cron-under-linux-or-unix-oses/
+jobs:
+  build:
+    docker: # use the docker executor type; machine and macos executors are also supported
+      - image: circleci/node:10.14-browsers
 
-      steps:
-        - checkout
-        - restore_cache:
-            keys:
-            - v1-dependencies-{{ checksum "package.json" }}
-            - v1-dependencies-
+    working_directory: ~/hiring_test
 
-        - run: yarn install
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          - v1-dependencies-
 
-        - save_cache:
-            paths:
-              - node_modules
-            key: v1-dependencies-{{ checksum "package.json" }}
+      - run: yarn install
 
-        - run: yarn test
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
 
-        - store_test_results:
-            path: /tmp/test-results
-    triggers:
-      - schedule:
-          cron: "0 * * * *" # This should run on the 0th minute of every hour,
-                             # every day, every month, every day of the week.
+      - run: yarn test
 
-                # * * * * * command to be executed
-                # - - - - -
-                # | | | | |
-                # | | | | ----- Day of week (0 - 7) (Sunday=0 or 7)
-                # | | | ------- Month (1 - 12)
-                # | | --------- Day of month (1 - 31)
-                # | ----------- Hour (0 - 23)
-                # ------------- Minute (0 - 59)
-                
-                # https://www.cyberciti.biz/faq/how-do-i-add-jobs-to-cron-under-linux-or-unix-oses/
+      - store_test_results:
+          path: /tmp/test-results
