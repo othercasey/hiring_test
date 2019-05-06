@@ -1,4 +1,8 @@
 version: 2
+hourly:
+  triggers:
+    - schedule:
+      cron: "0 0 * * *"
 jobs:
   build:
     docker: # use the docker executor type; machine and macos executors are also supported
