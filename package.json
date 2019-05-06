@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "test": "testcafe chrome:headless tests/**/* -r xunit:/tmp/test-results/res.xml"
+  },
+  "devDependencies": {
+      "testcafe": "*",
+      "testcafe-reporter-xunit": "*"
+  }
+}
