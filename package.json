@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "test": "testcafe chrome:headless tests/**/* -r xunit:/tmp/test-results/res.xml"
+    "test": "testcafe chrome:headless ecommerce_browser_test.js -r xunit:/tmp/test-results/res.xml"
   },
   "devDependencies": {
       "testcafe": "*",
