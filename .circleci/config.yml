@@ -2,7 +2,7 @@ version: 2
 hourly:
   triggers:
     - schedule:
-      cron: "21 * * * *" # This should run on the 21st minute of every hour,
+      cron: "0 * * * *" # This should run on the 0th minute of every hour,
                          # every day, every month, every day of the week.
 
             # * * * * * command to be executed
