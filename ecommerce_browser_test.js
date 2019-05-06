@@ -66,38 +66,36 @@ test('Buy the silver watch', async t => {
 
     const modalFloater    = Selector('div.container');
     const iframeya        = Selector('iframe');
-    const modalEmail      = Selector('.CardField-email')
-    const modalNumber     = Selector('.CardField-number')
-    const modalExpiry     = Selector('.CardField-expiry')
-    const modalCVC        = Selector('.CardField-cvc')
-    const modalZip        = Selector('.CardField-postalCode')
+    // const modalEmail      = Selector('.CardField-email');
+    // const modalNumber     = Selector('.CardField-number');
+    // const modalExpiry     = Selector('.CardField-expiry');
+    // const modalCVC        = Selector('.CardField-cvc');
 
-    // const modalFormEmail  = Selector('.bf22a60-7008-11e9-8689-61854e0391d4')
-    //                         .find('input')
-    //                         .withAttribute('placeholder', 'Email');
-    const modalFormNumber = Selector('div.Section-content')
+    const modalFormEmail  = Selector('div.u-paddingTopMd')
                             .find('input')
-                            .withAttribute('placeholder', 'Card number');
-    // const modalExp        = Selector('div.Section-content')
-    //                         .find('input')
-    //                         .withAttribute('placeholder', 'MM / YY');
-    // const modalCVC        = Selector('div.Section-content')
-    //                         .find('input')
-    //                         .withAttribute('placeholder', 'CVC');
-    // const modalPayButton  = Selector('div.Button-content');
+                            .withAttribute('autocomplete-hammerhead-stored-value', 'email');
+    const modalFormNumber = Selector('div.Section-child--padded')
+                            .find('input')
+                            .withAttribute('autocomplete-hammerhead-stored-value', 'cc-number');
+    const modalExp        = Selector('div.Section-child--padded')
+                            .find('input')
+                            .withAttribute('autocomplete-hammerhead-stored-value', 'cc-exp');
+    const modalCVC        = Selector('div.Section-child--padded')
+                            .find('input')
+                            .withAttribute('placeholder', 'CVC');
+    const modalPayButton  = Selector('div.Section-button');
 
-    async function inputCardData (cardElementSelector, { 
-      cardNumber, cardExpiry, cardCVC, postalCode }) {                                           
-      await t                                                                                                                                     
-          .switchToIframe(Selector(cardElementSelector).find('iframe')) // Switch to the secure payment iframe                                    
-          // .typeText(modalEmail, cardEmail)
-          .typeText(modalNumber, cardNumber)                                                                                              
-          .typeText(modalExpiry, cardExpiry)                                                                                              
-          .typeText(modalCVC, cardCVC)                                                                                                    
-          .typeText(modalZip, postalCode)
-          // .typeText(modalEmail, cardEmail)
-          .switchToMainWindow();                                                                                         
-      } 
+    // async function inputCardData (cardElementSelector, { 
+    //   cardNumber, cardExpiry, cardCVC, postalCode }) {                                           
+    //   await t                                                                                                                                     
+    //       .switchToIframe(Selector(cardElementSelector).find('iframe')) // Switch to the secure payment iframe                                    
+    //       //.typeText(modalEmail, 'hello@test.com')
+    //       .typeText(modalNumber, '4242 4242 4242 4242')
+    //       .typeText(modalExpiry, '12/24')
+    //       .typeText(modalCVC, '777')
+    //       .typeText(modalEmail, 'hello@test.com')
+    //       .switchToMainWindow();                                                                                         
+    //   } 
       // https://testcafe-discuss.devexpress.com/t/entering-a-test-credit-card-into-stripe-card-element/913
 
 
@@ -146,13 +144,15 @@ test('Buy the silver watch', async t => {
       
       .expect(iframeya.exists).ok('iframe is lost in space')
                                                                                                                                        
-      await inputCardData('#card-element', {                                                                                                      
-          // cardEmail:  'hello@test.com', 
-          cardNumber: '4242 4242 4242 4242',                                                                                                      
-          cardExpiry: '12/24',                                                                                                                    
-          cardCVC:    '777',                                                                                                                      
-          postalCode: '12345'                                                                                                                     
-      });  
+      // .switchToIframe(iframeya) // Switch to the secure payment iframe                                    
+          //.typeText(modalEmail, 'hello@test.com')
+          .typeText(modalFormNumber, '4242 4242 4242 4242')
+          .typeText(modalExp, '12/24')
+          .typeText(modalCVC, '777')
+          .typeText(modalFormEmail, 'hello@test.com')
+          .expect(modalPayButton.exists).ok('No modal Pay button')
+          .click(modalPayButton)
+          .switchToMainWindow()
       // https://testcafe-discuss.devexpress.com/t/entering-a-test-credit-card-into-stripe-card-element/913
 
       // await browser.switchToIframe(modaldialogFrame);
@@ -172,6 +172,6 @@ test('Buy the silver watch', async t => {
         // .click(modalPayButton)
 
       // Make sure the Modal goes away
-        // .wait(100)
+        .wait(1000);
         // .expect(modalFloater.exists).notOk('Modal still visible');
 });
