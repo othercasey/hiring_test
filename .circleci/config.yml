@@ -1,42 +1,73 @@
-version: 2
-hourly:
-  triggers:
-    - schedule:
-      cron: "0 * * * *" # This should run on the 0th minute of every hour,
-                         # every day, every month, every day of the week.
+workflows:
+  version: 2
+  commit:
+    jobs:
+      build:
+        docker: # use the docker executor type; machine and macos executors are also supported
+          - image: circleci/node:10.14-browsers
 
-            # * * * * * command to be executed
-            # - - - - -
-            # | | | | |
-            # | | | | ----- Day of week (0 - 7) (Sunday=0 or 7)
-            # | | | ------- Month (1 - 12)
-            # | | --------- Day of month (1 - 31)
-            # | ----------- Hour (0 - 23)
-            # ------------- Minute (0 - 59)
-            
-            # https://www.cyberciti.biz/faq/how-do-i-add-jobs-to-cron-under-linux-or-unix-oses/
-jobs:
-  build:
-    docker: # use the docker executor type; machine and macos executors are also supported
-      - image: circleci/node:10.14-browsers
+        working_directory: ~/hiring_test
 
-    working_directory: ~/hiring_test
+        steps:
+          - checkout
+          - restore_cache:
+              keys:
+              - v1-dependencies-{{ checksum "package.json" }}
+              - v1-dependencies-
 
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "package.json" }}
-          - v1-dependencies-
+          - run: yarn install
 
-      - run: yarn install
+          - save_cache:
+              paths:
+                - node_modules
+              key: v1-dependencies-{{ checksum "package.json" }}
 
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
+          - run: yarn test
 
-      - run: yarn test
+          - store_test_results:
+              path: /tmp/test-results
+    hourly:
+      jobs:
+      build:
+        docker: # use the docker executor type; machine and macos executors are also supported
+          - image: circleci/node:10.14-browsers
 
-      - store_test_results:
-          path: /tmp/test-results
+        working_directory: ~/hiring_test
+
+        steps:
+          - checkout
+          - restore_cache:
+              keys:
+              - v1-dependencies-{{ checksum "package.json" }}
+              - v1-dependencies-
+
+          - run: yarn install
+
+          - save_cache:
+              paths:
+                - node_modules
+              key: v1-dependencies-{{ checksum "package.json" }}
+
+          - run: yarn test
+
+          - store_test_results:
+              path: /tmp/test-results
+      triggers:
+        - schedule:
+            cron: "0 * * * *" # This should run on the 0th minute of every hour,
+                               # every day, every month, every day of the week.
+
+                  # * * * * * command to be executed
+                  # - - - - -
+                  # | | | | |
+                  # | | | | ----- Day of week (0 - 7) (Sunday=0 or 7)
+                  # | | | ------- Month (1 - 12)
+                  # | | --------- Day of month (1 - 31)
+                  # | ----------- Hour (0 - 23)
+                  # ------------- Minute (0 - 59)
+                  
+                  # https://www.cyberciti.biz/faq/how-do-i-add-jobs-to-cron-under-linux-or-unix-oses/
+            filters:
+              branches:
+                only:
+                  - master
