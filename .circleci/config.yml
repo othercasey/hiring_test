@@ -8,4 +8,4 @@ jobs:
       - run: # Run step to execute commands, see
       # circleci.com/docs/2.0/configuration-reference/#run
           name: Running tests
-          command: testcafe chrome ecommerce_browser_test.js
+          command: 'testcafe chrome ecommerce_browser_test.js'
