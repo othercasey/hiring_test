@@ -28,13 +28,15 @@ jobs:
 
 workflows:
   version: 2
-
+  commit:
+  jobs:
+    - build_hiring_test
   hourly:
     triggers:
       - schedule:
         cron: "0 * * * *" # This should run on the 0th minute of every hour,
                            # every day, every month, every day of the week.
-
+        # Cron Helper
               # * * * * * command to be executed
               # - - - - -
               # | | | | |
@@ -49,6 +51,5 @@ workflows:
               # https://crontab.guru/every-hour
   jobs:
     - build_hiring_test
-      requires:
-        - build_hiring_test
+  
 
