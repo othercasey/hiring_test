@@ -28,27 +28,25 @@ jobs:
 
 workflows:
   version: 2
-  hourly:
-    jobs:
-      - build_hiring_test
-      required:
+    hourly:
+      jobs:
         - build_hiring_test
-    triggers:
-      - schedule:
-        cron: '0 * * * *' # This should run on the 0th minute of every hour,
-                           # every day, every month, every day of the week.
-        # Cron Helper
-              # * * * * * command to be executed
-              # - - - - -
-              # | | | | |
-              # | | | | ----- Day of week (0 - 7) (Sunday=0 or 7)
-              # | | | ------- Month (1 - 12)
-              # | | --------- Day of month (1 - 31)
-              # | ----------- Hour (0 - 23)
-              # ------------- Minute (0 - 59)
-              
-              # https://www.cyberciti.biz/faq/how-do-i-add-jobs-to-cron-under-linux-or-unix-oses/
-              # https://pubs.opengroup.org/onlinepubs/7908799/xcu/crontab.html
-              # https://crontab.guru/every-hour
-  
-
+        required:
+          - build_hiring_test
+      triggers:
+        - schedule:
+          cron: '0 * * * *' # This should run on the 0th minute of every hour,
+                             # every day, every month, every day of the week.
+          # Cron Helper
+                # * * * * * command to be executed
+                # - - - - -
+                # | | | | |
+                # | | | | ----- Day of week (0 - 7) (Sunday=0 or 7)
+                # | | | ------- Month (1 - 12)
+                # | | --------- Day of month (1 - 31)
+                # | ----------- Hour (0 - 23)
+                # ------------- Minute (0 - 59)
+                
+                # https://www.cyberciti.biz/faq/how-do-i-add-jobs-to-cron-under-linux-or-unix-oses/
+                # https://pubs.opengroup.org/onlinepubs/7908799/xcu/crontab.html
+                # https://crontab.guru/every-hour
