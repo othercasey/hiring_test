@@ -28,7 +28,6 @@ jobs:
 
 workflows:
   version: 2
-  commit:
   jobs:
     - build_hiring_test
   hourly:
