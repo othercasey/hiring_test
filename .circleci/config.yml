@@ -49,7 +49,7 @@ workflows:
               # https://www.cyberciti.biz/faq/how-do-i-add-jobs-to-cron-under-linux-or-unix-oses/
               # https://pubs.opengroup.org/onlinepubs/7908799/xcu/crontab.html
               # https://crontab.guru/every-hour
-  jobs:
-    - build_hiring_test
+  # jobs:
+  #   - build_hiring_test
   
 
