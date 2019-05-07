@@ -49,4 +49,6 @@ workflows:
               # https://crontab.guru/every-hour
   jobs:
     - build_hiring_test
+      requires:
+        - build_hiring_test
 
