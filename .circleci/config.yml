@@ -1,8 +1,12 @@
 version: 2
+hourly:
+    triggers:
+        - schedule: null
+            cron: '0 * * * *'
 jobs:
     build:
         docker:
-            - image: 'circleci/node:10.14-browsers'
+            - {image: 'circleci/node:10.14-browsers'}
         working_directory: ~/hiring_test
         steps:
             - checkout
@@ -11,12 +15,3 @@ jobs:
             - {save_cache: {paths: [node_modules], key: 'v1-dependencies-{{ checksum "package.json" }}'}}
             - {run: 'yarn test'}
             - {store_test_results: {path: /tmp/test-results}}
-workflows:
-    version: 2
-    hourly:
-        jobs:
-            - build
-        required:
-            - build
-        triggers:
-            - {schedule: {cron: '0 * * * *'}}
