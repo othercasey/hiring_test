@@ -1,8 +1,8 @@
 version: 2
 jobs:
-    build_hiring_test:
+    build:
         docker:
-            - {image: 'circleci/node:10.14-browsers'}
+            - image: 'circleci/node:10.14-browsers'
         working_directory: ~/hiring_test
         steps:
             - checkout
@@ -15,8 +15,8 @@ workflows:
     version: 2
     hourly:
         jobs:
-            - build_hiring_test
+            - build
         required:
-            - build_hiring_test
+            - build
         triggers:
             - {schedule: {cron: '0 * * * *'}}
